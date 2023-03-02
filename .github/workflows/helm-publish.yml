@@ -28,4 +28,4 @@ jobs:
 
       - name: Helm Lint
         run: |
-          helm lint data-platform-cluster data-platform-cluster/values.yaml
+          helm lint data-platform-cluster --values data-platform-cluster/values.yaml
