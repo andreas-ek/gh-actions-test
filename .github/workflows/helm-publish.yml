@@ -9,8 +9,9 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
+  CHART_NAME: data-platform-cluster
+  CHART_IMAGE: CHART_IMAGE=ghcr.io/${{ github.repository_owner }}/${CHART_NAME}
+  CHART_VERSION: 0.0.1
 jobs:
   build:
 
@@ -28,4 +29,12 @@ jobs:
 
       - name: Helm Lint
         run: |
-          helm lint data-platform-cluster --values data-platform-cluster/values.yaml
+          helm lint ${CHART_NAME} --values ${CHART_NAME}/values.yaml
+
+      - name: Helm Template
+        run: |
+          helm template ${CHART_NAME} --values ${CHART_NAME}/values.yaml
+
+      - name: Helm Chart Save
+        run: |
+          helm chart save ${{ github.workspace }}/${CHART_NAME}/ ${CHART_IMAGE}:${CHART_VERSION}
