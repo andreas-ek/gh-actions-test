@@ -25,7 +25,7 @@ jobs:
       - name: Install Helm
         uses: Azure/setup-helm@v1
         with:
-          version: v3.10.0
+          version: v3.11.1
 
       - name: Helm Lint
         run: |
@@ -35,6 +35,6 @@ jobs:
         run: |
           helm template ${CHART_NAME} --values ${CHART_NAME}/values.yaml
 
-      - name: Helm Chart Save
+      - name: Helm Package
         run: |
-          helm chart save ${{ github.workspace }}/${CHART_NAME}/ ${CHART_IMAGE}:${CHART_VERSION}
+          helm package ${CHART_NAME}/ ${CHART_IMAGE}:${CHART_VERSION}
