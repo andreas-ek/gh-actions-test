@@ -1,0 +1,7 @@
+apiVersion: v2
+appVersion: 0.0.1
+description: A Strimzi Kafka Cluster
+name: data-platform-cluster
+type: application
+version: 0.0.1
+icon: https://img.shields.io/badge/Apache%20Kafka-231F20.svg?style=for-the-badge&logo=Apache-Kafka&logoColor=white

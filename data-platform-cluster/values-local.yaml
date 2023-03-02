@@ -1,0 +1,21 @@
+kafka:
+  clusterName: data-platform-cluster
+  version: 3.2.3
+  replicas: 1
+  storage:
+    size: 20Gi
+  config:
+    defaultReplicationFactor: 1
+    interBrokerProtocolVersion: 3.2
+    minInsyncReplicas: 1
+    offsetsTopicReplicationFactor: 1
+    transaction:
+      state:
+        log:
+          minIsr: 1
+          replicationFactor: 1
+
+zookeeper:
+  replicas: 1
+  storage:
+    size: 20Gi
