@@ -18,10 +18,14 @@ jobs:
 
     steps:
 
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Install Helm
         uses: Azure/setup-helm@v1
         with:
-          version: v3.5.0
+          version: v3.10.0
+
+      - name: Helm Lint
+        run: |
+          helm lint data-platform-cluster data-platform-cluster/values.yaml
