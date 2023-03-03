@@ -29,3 +29,13 @@ jobs:
         run: |
           echo $CHART_NAME
           echo $CHART_VERSION
+
+      - name: Exit if folder does not exist
+        run: |
+          if [ -f $CHART_NAME/Chart.yaml ] 
+          then
+              echo "$CHART_NAME/Chart.yaml exists."
+          else
+              echo "$CHART_NAME/Chart.yaml does not exist."
+              throw "Error: $CHART_NAME/Chart.yaml does not exist."
+          fi
