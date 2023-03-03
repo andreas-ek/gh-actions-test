@@ -2,16 +2,8 @@ name: Helm Publish
 
 on:
   push:
-    branches: [ "main" ]
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "main" ]
+    tags: [ '[0-9]+.[0-9]+.[0-9]+-.*' ]
 
-env:
-  REGISTRY: ghcr.io
-  CHART_NAME: data-platform-cluster
-  CHART_IMAGE: CHART_IMAGE=ghcr.io/${{ github.repository_owner }}/${CHART_NAME}
-  CHART_VERSION: 0.0.1
 jobs:
   build:
 
@@ -22,19 +14,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Helm
-        uses: Azure/setup-helm@v1
-        with:
-          version: v3.11.1
-
-      - name: Helm Lint
+      - name: Exit if not on main branch
+        if: endsWith(github.ref, 'main') == false
+        run: exit -1
+      
+      - name: GitHub Tag Name example
         run: |
-          helm lint ${CHART_NAME} --values ${CHART_NAME}/values.yaml
+          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
 
-      - name: Helm Template
-        run: |
-          helm template ${CHART_NAME} --values ${CHART_NAME}/values.yaml
+          CHART_NAME=$(echo $GITHUB_REF_NAME | cut -d '-' -f2-)
+          CHART_VERSION=$(echo $GITHUB_REF_NAME | cut -d '-' -f-1)
 
-      - name: Helm Package
+          echo "CHART_NAME=${CHART_NAME}" >> $GITHUB_ENV
+          echo "CHART_VERSION=${CHART_VERSION}" >> $GITHUB_ENV
+
+      - name: GitHub Tag echo example
         run: |
-          helm package ${CHART_NAME}/ ${CHART_IMAGE}:${CHART_VERSION}
+          echo $CHART_NAME
+          echo $CHART_VERSION
